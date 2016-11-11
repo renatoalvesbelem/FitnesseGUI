@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fixtures>
+    <fixture>
+        <xml.Fixture>
+            <nomeFixture>click</nomeFixture>
+            <selectoresFixtures>
+                <xml.SelectoresFixture>
+                    <seletor>id</seletor>
+                </xml.SelectoresFixture>
+                <xml.SelectoresFixture>
+                    <seletor>css</seletor>
+                </xml.SelectoresFixture>
+                <xml.SelectoresFixture>
+                    <seletor>xpath</seletor>
+                </xml.SelectoresFixture>
+            </selectoresFixtures>
+        </xml.Fixture>
+        <xml.Fixture>
+            <nomeFixture>click in</nomeFixture>
+            <selectoresFixtures>
+                <xml.SelectoresFixture>
+                    <seletor>id</seletor>
+                </xml.SelectoresFixture>
+                <xml.SelectoresFixture>
+                    <seletor>css</seletor>
+                </xml.SelectoresFixture>
+            </selectoresFixtures>
+        </xml.Fixture>
+    </fixture>
+</fixtures>
