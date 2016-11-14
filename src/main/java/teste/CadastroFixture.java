@@ -1,10 +1,8 @@
 package teste;
 
-import components.table.TableTranferHandler;
 import components.table.TableTranferHandlerParameter;
 import xml.Fixture;
 import xml.Fixtures;
-import xml.SelectoresFixture;
 import xml.XMLFixtures;
 
 import javax.swing.*;
@@ -17,7 +15,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import java.util.function.ObjDoubleConsumer;
 
 public class CadastroFixture {
 
@@ -29,7 +26,7 @@ public class CadastroFixture {
 
             public void run() {
                 JTextField nameFixtureTextField = new JTextField();
-                JComboBox fixturesNamesComboBox = new JComboBox();
+                JComboBox fixturesNamesComboBox = new JComboBox<String>();
                 JComboBox seletoresComboBox = new JComboBox();
                 JTextField valueSeletorFixtureTextField = new JTextField();
                 JButton adicionarFixture = new JButton("+");
@@ -126,11 +123,12 @@ public class CadastroFixture {
                     frame.setLocationByPlatform(true);
                     frame.setMinimumSize(frame.getSize());
                 } catch (Throwable ignoreAndContinue) {
+                    ignoreAndContinue.printStackTrace();
                 }
                 frame.setVisible(true);
             }
 
-            public void setPanelParametros() {
+            private void setPanelParametros() {
                 JPanel dynamicLabels = new JPanel(new BorderLayout(4, 4));
                 dynamicLabels.setLayout(new BoxLayout(dynamicLabels, BoxLayout.Y_AXIS));
                 dynamicLabels.setBorder(new TitledBorder(""));
@@ -154,7 +152,6 @@ public class CadastroFixture {
                 tableLabels.setDropMode(DropMode.ON_OR_INSERT);
                 tableLabels.setTransferHandler(new TableTranferHandlerParameter(tableLabels, defaultTableModel));
 
-
                 gui.add(dynamicLabels, BorderLayout.WEST);
 
                 adicionarParametroButton.addActionListener(new ActionListener() {
@@ -162,12 +159,11 @@ public class CadastroFixture {
                         if (!nomeParametros.getText().equals("")) {
                             List<String> tempParametros = new ArrayList<>();
                             for (Object vector : defaultTableModel.getDataVector()) {
-                                tempParametros.add(((Vector<String>) vector).get(0));
+                                tempParametros.add((String) ((Vector) vector).get(0));
                             }
                             if (!tempParametros.contains(nomeParametros.getText())) {
                                 defaultTableModel.addRow(new String[]{nomeParametros.getText()});
                             }
-                            frame.validate();
                         }
                     }
                 });
