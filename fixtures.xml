@@ -3,28 +3,11 @@
     <fixture>
         <xml.Fixture>
             <nomeFixture>click</nomeFixture>
-            <selectoresFixtures>
-                <xml.SelectoresFixture>
-                    <seletor>id</seletor>
-                </xml.SelectoresFixture>
-                <xml.SelectoresFixture>
-                    <seletor>css</seletor>
-                </xml.SelectoresFixture>
-                <xml.SelectoresFixture>
-                    <seletor>xpath</seletor>
-                </xml.SelectoresFixture>
-            </selectoresFixtures>
+            <usage>|click| [id= | css= | xpath=] |</usage>
         </xml.Fixture>
         <xml.Fixture>
-            <nomeFixture>click in</nomeFixture>
-            <selectoresFixtures>
-                <xml.SelectoresFixture>
-                    <seletor>id</seletor>
-                </xml.SelectoresFixture>
-                <xml.SelectoresFixture>
-                    <seletor>css</seletor>
-                </xml.SelectoresFixture>
-            </selectoresFixtures>
+            <nomeFixture>sleep</nomeFixture>
+            <usage>|sleep| [Time in seconds] |</usage>
         </xml.Fixture>
     </fixture>
 </fixtures>

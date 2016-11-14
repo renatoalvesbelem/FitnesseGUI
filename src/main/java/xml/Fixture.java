@@ -6,6 +6,8 @@ public class Fixture {
     public String nomeFixture;
     public List<SelectoresFixture> selectoresFixtures;
 
+    public String usage;
+
     public String getNomeFixture() {
         return nomeFixture;
     }
@@ -20,5 +22,13 @@ public class Fixture {
 
     public void setSelectoresFixtures(List<SelectoresFixture> selectoresFixtures) {
         this.selectoresFixtures = selectoresFixtures;
+    }
+
+    public String getUsage() {
+        return usage;
+    }
+
+    public void setUsage(String usage) {
+        this.usage = usage;
     }
 }
