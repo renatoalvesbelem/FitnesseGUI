@@ -19,15 +19,18 @@ public class CadastroFixture {
     public static void main(String[] args) {
 
         Runnable r = new Runnable() {
+            JPanel gui;
+            JFrame frame;
 
             public void run() {
                 JTextField nameFixtureTextField = new JTextField();
                 JComboBox fixturesNamesComboBox = new JComboBox();
                 JComboBox seletoresComboBox = new JComboBox();
                 JTextField valueSeletorFixtureTextField = new JTextField();
-                JFrame frame = new JFrame("");
+                frame = new JFrame("");
+                frame.setResizable(false);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                JPanel gui = new JPanel(new BorderLayout(5, 5));
+                gui = new JPanel(new BorderLayout(5, 5));
                 JPanel panelAll = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
                 JPanel nameFixtureJpanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
                 JPanel valueSelectorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
@@ -37,7 +40,6 @@ public class CadastroFixture {
                 nameFixtureJpanel.setBorder(new TitledBorder("Seletor"));
 
                 Fixtures fixtures = new XMLFixtures().getFixtures();
-
                 nameFixtureTextField.setPreferredSize(new Dimension(300, 25));
                 valueSelectorPanel.add(new JLabel("Nome Fixture: "));
                 valueSelectorPanel.add(nameFixtureTextField);
@@ -72,34 +74,19 @@ public class CadastroFixture {
                         }
                     }
                 });
-                nameFixtureJpanel.add(fixturesNamesComboBox) ;
+                nameFixtureJpanel.add(fixturesNamesComboBox);
                 nameFixtureJpanel.add(seletoresComboBox);
                 nameFixtureJpanel.add(valueSeletorFixtureTextField);
 
                 panelAll.setLayout(new BoxLayout(panelAll, BoxLayout.Y_AXIS));
                 panelAll.add(valueSelectorPanel, BorderLayout.NORTH);
                 panelAll.add(nameFixtureJpanel, BorderLayout.SOUTH);
+
+
                 gui.add(panelAll, BorderLayout.NORTH);
 
-                JPanel dynamicLabels = new JPanel(new BorderLayout(4, 4));
-                dynamicLabels.setBorder(new TitledBorder(""));
-                gui.add(dynamicLabels, BorderLayout.WEST);
 
-                JPanel labels = new JPanel(new GridLayout(0, 2, 3, 3));
-                labels.setBorder(new TitledBorder("Parâmetro"));
-
-                JButton addNew = new JButton("Adicionar Parâmetro");
-                dynamicLabels.add(addNew, BorderLayout.CENTER);
-                JTextField nomeParametros = new JTextField();
-                dynamicLabels.add(nomeParametros, BorderLayout.NORTH);
-                addNew.addActionListener(new ActionListener() {
-
-                    public void actionPerformed(ActionEvent ae) {
-                        labels.add(new JLabel(nomeParametros.getText()));
-                        frame.validate();
-                    }
-                });
-                dynamicLabels.add(new JScrollPane(labels), BorderLayout.SOUTH);
+                setPanelParametros();
 
                 String[] header = {"Name", "Value"};
                 String[] a = new String[0];
@@ -149,7 +136,43 @@ public class CadastroFixture {
 
                 frame.setVisible(true);
             }
+
+            public void setPanelParametros() {
+                JPanel dynamicLabels = new JPanel(new BorderLayout(4, 4));
+                dynamicLabels.setLayout(new BoxLayout(dynamicLabels, BoxLayout.Y_AXIS));
+                dynamicLabels.setBorder(new TitledBorder(""));
+
+                JPanel dadosParamerosPanel = new JPanel();
+                dadosParamerosPanel.setLayout(new BoxLayout(dadosParamerosPanel, BoxLayout.X_AXIS));
+                JTextField nomeParametros = new JTextField();
+                dadosParamerosPanel.add(nomeParametros);
+
+                JButton adicionarParametroButton = new JButton("+");
+                dadosParamerosPanel.add(adicionarParametroButton);
+
+                DefaultTableModel defaultTableModel = new DefaultTableModel();
+                JTable tableLabels = new JTable(defaultTableModel);
+                defaultTableModel.addColumn("Test Script");
+                tableLabels.setSize(100, 20);
+                dynamicLabels.add(dadosParamerosPanel, BorderLayout.NORTH);
+                dynamicLabels.add(tableLabels, BorderLayout.SOUTH);
+
+                gui.add(dynamicLabels, BorderLayout.WEST);
+
+                adicionarParametroButton.addActionListener(new ActionListener() {
+
+                    public void actionPerformed(ActionEvent ae) {
+                        defaultTableModel.addRow(new String[]{nomeParametros.getText()});
+                        frame.validate();
+                    }
+                });
+                dynamicLabels.add(new JScrollPane(tableLabels), BorderLayout.SOUTH);
+            }
+
+
         };
         SwingUtilities.invokeLater(r);
     }
+
+
 }
