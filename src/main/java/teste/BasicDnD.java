@@ -8,7 +8,6 @@ import components.table.CheckStatus;
 import components.table.DefaultJTableFixture;
 import components.table.DefaultTableModelFixture;
 import components.table.TableTranferHandler;
-import org.apache.commons.collections.map.HashedMap;
 import read.ReadTest;
 
 import javax.swing.*;
@@ -20,21 +19,19 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.HashMap;
-import java.util.Map;
 
 public class BasicDnD extends JPanel implements ActionListener {
     private static JFrame frame;
-    public static JTable tableFixtures;
+    private static JTable tableFixtures;
     public static JTable tableScenario;
     private JTree tree;
     private JCheckBox toggleDnD;
-    static File fileRoot = new File("C:\\Users\\jose.renato\\Documents\\Projetos\\esaj-test");
+    private static File fileRoot = new File("C:\\Users\\jose.renato\\Documents\\Projetos\\esaj-test");
     public static int statusTableScript = 0;
     public static String pathArchive;
-    HashMap<String,StringBuilder> mapFixture;
+    private static HashMap<String, StringBuilder> mapFixture;
 
-
-    public BasicDnD() {
+    private BasicDnD() {
         super(new BorderLayout());
         JPanel panelFixture = createVerticalBoxPanel();
         JPanel panelTree = createVerticalBoxPanel();
@@ -51,7 +48,6 @@ public class BasicDnD extends JPanel implements ActionListener {
         tableScenario.addMouseListener(new OptionsTableScenario());
         JScrollPane tableView = new JScrollPane(tableScenario);
         panelScrip.add(createPanelForComponent(tableView, "Script Fitnesse"));
-
 
         DefaultTableModel tableModelFixtures = new DefaultTableModelFixture();
         tableModelFixtures.addColumn("Fixture");
@@ -119,7 +115,7 @@ public class BasicDnD extends JPanel implements ActionListener {
                         if (e.getClickCount() == 2) {
                             pathArchive = fileRoot.getAbsolutePath() + (treePath.getParentPath().toString().replace(treePath.getPathComponent(0).toString(), "").replace(", ", "\\").replace("[", "").replace("]", "")) + "\\" + (treePath.getLastPathComponent().toString());
                             new ReadTest().getScriptTest(pathArchive, tableModelScenario);
-                            mapFixture= new ReadTest().getFixtureScenario(tableModelFixtures, fileRoot, pathArchive);
+                            mapFixture = new ReadTest().getFixtureScenario(tableModelFixtures, fileRoot, pathArchive);
                             statusTableScript = tableModelScenario.getRowCount();
                         }
                     }
@@ -134,29 +130,29 @@ public class BasicDnD extends JPanel implements ActionListener {
 
     }
 
-    protected JPanel createVerticalBoxPanel() {
+    /**
+     * Create the GUI and show it.  For thread safety,
+     * this method should be invoked from the
+     * event-dispatching thread.
+     */
+    private static void createAndShowGUI() {
+        //Create and set up the window.
+        frame = new JFrame("BasicDnD");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        //Create and set up the content pane.
+        JComponent newContentPane = new BasicDnD();
+        newContentPane.setOpaque(true); //content panes must be opaque
+        frame.setContentPane(newContentPane);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private JPanel createVerticalBoxPanel() {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.PAGE_AXIS));
         p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         return p;
-    }
-
-
-    public JPanel createPanelForComponent(JComponent comp, String title) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(comp, BorderLayout.CENTER);
-        if (title != null) {
-            panel.setBorder(BorderFactory.createTitledBorder(title));
-        }
-        return panel;
-    }
-
-    private void displayDropLocation(final String string) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                JOptionPane.showMessageDialog(null, string);
-            }
-        });
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -168,22 +164,13 @@ public class BasicDnD extends JPanel implements ActionListener {
         }
     }
 
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
-    private static void createAndShowGUI() {
-        //Create and set up the window.
-        frame = new JFrame("BasicDnD");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //Create and set up the content pane.
-        JComponent newContentPane = new BasicDnD();
-        newContentPane.setOpaque(true); //content panes must be opaque
-        frame.setContentPane(newContentPane);
-        frame.pack();
-        frame.setVisible(true);
+    private JPanel createPanelForComponent(JComponent comp, String title) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(comp, BorderLayout.CENTER);
+        if (title != null) {
+            panel.setBorder(BorderFactory.createTitledBorder(title));
+        }
+        return panel;
     }
 
     public static void main(String[] args) {
