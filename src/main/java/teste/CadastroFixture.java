@@ -41,24 +41,29 @@ public class CadastroFixture {
                 frame.setResizable(false);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 gui = new JPanel(new BorderLayout(5, 5));
-                JPanel panelAll = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
+                JPanel dataFixturePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
                 JPanel nameFixtureJpanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
                 JPanel valueSelectorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
 
                 gui.setBorder(new TitledBorder(""));
-                nameFixtureJpanel.setBorder(new TitledBorder("Fixture"));
 
                 Fixtures fixtures = new XMLFixtures().getFixtures();
                 nameFixtureTextField.setPreferredSize(new Dimension(300, 25));
-                valueSelectorPanel.add(new JLabel("Nome Fixture: "));
-                valueSelectorPanel.add(nameFixtureTextField);
-                valueSelectorPanel.add(salvarFecharButton);
+                JPanel allDatePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
 
+                JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 3, 3));
+
+                nameFixtureJpanel.add(new JLabel("Nome Fixture: "));
+                nameFixtureJpanel.add(nameFixtureTextField);
+
+                buttonsPanel.add(salvarFecharButton);
+                allDatePanel.setLayout(new BoxLayout(allDatePanel, BoxLayout.X_AXIS));
+                allDatePanel.add(nameFixtureJpanel,BorderLayout.WEST);
+                allDatePanel.add(buttonsPanel,BorderLayout.EAST);
 
                 valueSeletorFixtureTextField.setPreferredSize(new Dimension(250, 25));
                 nameFixtureJpanel.add(valueSeletorFixtureTextField);
                 fixturesNamesComboBox.addItem("Selecionar");
-
 
                 valueSeletorFixtureTextField.setEditable(false);
 
@@ -107,15 +112,16 @@ public class CadastroFixture {
                     }
                 });
 
-                nameFixtureJpanel.add(fixturesNamesComboBox);
-                nameFixtureJpanel.add(valueSeletorFixtureTextField);
-                nameFixtureJpanel.add(adicionarFixtureButton);
+                valueSelectorPanel.add(fixturesNamesComboBox);
+                valueSelectorPanel.add(valueSeletorFixtureTextField);
+                valueSelectorPanel.add(adicionarFixtureButton);
 
-                panelAll.setLayout(new BoxLayout(panelAll, BoxLayout.Y_AXIS));
-                panelAll.add(valueSelectorPanel, BorderLayout.NORTH);
-                panelAll.add(nameFixtureJpanel, BorderLayout.SOUTH);
+                dataFixturePanel.setLayout(new BoxLayout(dataFixturePanel, BoxLayout.Y_AXIS));
+                dataFixturePanel.add(allDatePanel, BorderLayout.NORTH);
+                dataFixturePanel.add(valueSelectorPanel, BorderLayout.SOUTH);
 
-                gui.add(panelAll, BorderLayout.NORTH);
+
+                gui.add(dataFixturePanel, BorderLayout.NORTH);
 
                 setPanelParametros();
 
