@@ -19,37 +19,33 @@ import java.util.List;
 import java.util.Vector;
 
 public class CadastroFixture {
-private JTable tableFixtureSelected;
+    private JTable tableFixtureSelected;
     private int row;
+
     public CadastroFixture(JTable table, int row, String action) {
-      cadastroFixture();
+        cadastroFixture(action);
         this.tableFixtureSelected = table;
         this.row = row;
-        if (action.equals("New")){
 
-        }
-        else {
-
-        }
     }
 
-
-    public void cadastroFixture() {
+    public void cadastroFixture(String action) {
 
         Runnable r = new Runnable() {
             JPanel gui;
             JFrame frame;
             DefaultTableModel defaultTableModel = new DefaultTableModelParameters();
             JTable tableLabels = new JTable(defaultTableModel);
+            JTextField nameFixtureTextField = new JTextField();
+            JComboBox fixturesNamesComboBox = new JComboBox<String>();
+            JComboBox seletoresComboBox = new JComboBox();
+            JTextField valueSeletorFixtureTextField = new JTextField();
+            JButton adicionarFixtureButton = new JButton("+");
+            JButton salvarFecharButton = new JButton("Salvar e Fechar");
+            JTextArea area = new JTextArea();
 
             public void run() {
-                JTextField nameFixtureTextField = new JTextField();
-                JComboBox fixturesNamesComboBox = new JComboBox<String>();
-                JComboBox seletoresComboBox = new JComboBox();
-                JTextField valueSeletorFixtureTextField = new JTextField();
-                JButton adicionarFixtureButton = new JButton("+");
-                JButton salvarFecharButton = new JButton("Salvar e Fechar");
-                JTextArea area = new JTextArea();
+
                 salvarFecharButton.setEnabled(false);
                 frame = new JFrame("");
                 frame.setResizable(false);
@@ -70,8 +66,8 @@ private JTable tableFixtureSelected;
 
                 buttonsPanel.add(salvarFecharButton);
                 allDatePanel.setLayout(new BoxLayout(allDatePanel, BoxLayout.X_AXIS));
-                allDatePanel.add(nameFixtureJpanel,BorderLayout.WEST);
-                allDatePanel.add(buttonsPanel,BorderLayout.EAST);
+                allDatePanel.add(nameFixtureJpanel, BorderLayout.WEST);
+                allDatePanel.add(buttonsPanel, BorderLayout.EAST);
 
                 valueSeletorFixtureTextField.setPreferredSize(new Dimension(250, 25));
                 nameFixtureJpanel.add(valueSeletorFixtureTextField);
@@ -105,14 +101,11 @@ private JTable tableFixtureSelected;
                 });
 
                 KeyAdapter adapter = new KeyAdapter() {
-                    public void keyReleased(java.awt.event.KeyEvent evt)
-                    {
+                    public void keyReleased(java.awt.event.KeyEvent evt) {
                         super.keyReleased(evt);
-                        if (nameFixtureTextField.getText().length() > 0 && area.getText().length() > 0)
-                        {
+                        if (nameFixtureTextField.getText().length() > 0 && area.getText().length() > 0) {
                             salvarFecharButton.setEnabled(true);
-                        } else
-                        {
+                        } else {
                             salvarFecharButton.setEnabled(false);
                         }
                     }
@@ -123,7 +116,7 @@ private JTable tableFixtureSelected;
 
                 salvarFecharButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent event) {
-
+                        frame.dispose();
                         StringBuilder fixtureFinal = new StringBuilder();
                         fixtureFinal.append("|scenario|" + nameFixtureTextField.getText() + "|");
                         for (int i = 0; i < tableLabels.getRowCount(); i++) {
@@ -134,13 +127,20 @@ private JTable tableFixtureSelected;
                             }
                         }
                         fixtureFinal.append("\n");
-
                         fixtureFinal.append(area.getText());
-                        String path =tableFixtureSelected.getValueAt(row,1).toString();
-                        String fixture =fixtureFinal.toString().replace("null", "");
-                        String fixtureName = fixture.split("\n")[0].replace("|scenario","");
-                        ((DefaultTableModel) tableFixtureSelected.getModel()).insertRow(row+1, new String []{fixtureName,path,fixture});
-                        frame.dispose();
+                        String path = tableFixtureSelected.getValueAt(row, 1).toString();
+                        String fixture = fixtureFinal.toString().replace("null", "");
+                        String fixtureName = fixture.split("\n")[0].replace("|scenario", "");
+
+                        if (action.equals("Edit")) {
+                            (tableFixtureSelected.getModel()).setValueAt(fixtureName, row,0);
+                            (tableFixtureSelected.getModel()).setValueAt(path, row,1);
+                            (tableFixtureSelected.getModel()).setValueAt(fixture, row,2);
+                            frame.dispose();
+                        } else {
+                            ((DefaultTableModel) tableFixtureSelected.getModel()).insertRow(row + 1, new String[]{fixtureName, path, fixture});
+                            frame.dispose();
+                        }
                     }
                 });
 
@@ -159,6 +159,7 @@ private JTable tableFixtureSelected;
 
                 area.setLineWrap(true);
                 area.setPreferredSize(new Dimension(500, 500));
+                area.setFont(new Font("Arial", Font.PLAIN, 12));
                 JScrollPane tableScroll = new JScrollPane(area);
                 Dimension tablePreferred = tableScroll.getPreferredSize();
                 tableScroll.setPreferredSize(new Dimension(tablePreferred.width, tablePreferred.height / 3));
@@ -178,6 +179,7 @@ private JTable tableFixtureSelected;
                 }
                 frame.setVisible(true);
             }
+
             private void setPanelParametros() {
                 JPanel dynamicLabels = new JPanel(new BorderLayout(4, 4));
                 dynamicLabels.setLayout(new BoxLayout(dynamicLabels, BoxLayout.Y_AXIS));
@@ -191,7 +193,7 @@ private JTable tableFixtureSelected;
                 nomeParametros.addKeyListener(new KeyAdapter() {
                     public void keyTyped(KeyEvent e) {
                         char keyChar = e.getKeyChar();
-                       if (Character.isUpperCase(keyChar)) {
+                        if (Character.isUpperCase(keyChar)) {
                             e.setKeyChar(Character.toLowerCase(keyChar));
                         } else if (!((keyChar < '0') || (keyChar > '9')) || Character.isSpaceChar(keyChar)) {
                             e.consume();
@@ -228,6 +230,27 @@ private JTable tableFixtureSelected;
                     }
                 });
                 dynamicLabels.add(new JScrollPane(tableLabels), BorderLayout.SOUTH);
+
+                if (action.equals("Edit")) {
+                    String nomeFixture = tableFixtureSelected.getValueAt(row, 0).toString().split("\\|")[1].trim();
+                    nameFixtureTextField.setText(nomeFixture);
+                    nameFixtureTextField.setEditable(false);
+                    String[] parametrosFixture = tableFixtureSelected.getValueAt(row, 2).toString().split("\n")[0].replace(nomeFixture, "").replace("|scenario", "").trim().split("\\|");
+                    if (parametrosFixture.length > 2) {
+                        defaultTableModel.addRow(new String[]{parametrosFixture[2], ""});
+                        for (int i = 3; i < parametrosFixture.length; i++) {
+                            String indicadorFitnesse = parametrosFixture[i++];
+                            String parametro = parametrosFixture[i];
+                            defaultTableModel.addRow(new String[]{parametro, indicadorFitnesse});
+
+                        }
+                    }
+
+                    String scritpFixture = tableFixtureSelected.getValueAt(row, 2).toString().replace(tableFixtureSelected.getValueAt(row, 2).toString().split("\n")[0].toString(), "");
+                    area.setText(scritpFixture.replaceFirst("\n", ""));
+
+                }
+
             }
         };
         SwingUtilities.invokeLater(r);
