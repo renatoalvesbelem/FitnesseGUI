@@ -238,7 +238,6 @@ public class CadastroFixture {
                 if (action.equals("Edit")) {
                     String nomeFixture = tableFixtureSelected.getValueAt(row, 0).toString().split("\\|")[1].trim();
                     nameFixtureTextField.setText(nomeFixture);
-                    nameFixtureTextField.setEditable(false);
                     String[] parametrosFixture = tableFixtureSelected.getValueAt(row, 2).toString().split("\n")[0].replace(nomeFixture, "").replace("|scenario", "").trim().split("\\|");
                     if (parametrosFixture.length > 2) {
                         defaultTableModel.addRow(new String[]{parametrosFixture[2], ""});
@@ -246,13 +245,12 @@ public class CadastroFixture {
                             String indicadorFitnesse = parametrosFixture[i++];
                             String parametro = parametrosFixture[i];
                             defaultTableModel.addRow(new String[]{parametro, indicadorFitnesse});
-
                         }
                     }
 
                     String scritpFixture = tableFixtureSelected.getValueAt(row, 2).toString().replace(tableFixtureSelected.getValueAt(row, 2).toString().split("\n")[0].toString(), "");
-                    area.setText(scritpFixture.replaceFirst("\n", ""));
-
+                    area.setText(scritpFixture.replaceFirst("\n", "").trim());
+                    salvarFecharButton.setEnabled(true);
                 }
 
             }
