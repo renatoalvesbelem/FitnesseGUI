@@ -1,6 +1,7 @@
 package teste;
 
 import components.cadastrofixture.table.DefaultTableModelParameters;
+import components.mouse.OptionsTableScenario;
 import components.table.TableTranferHandlerParameter;
 import xml.Fixture;
 import xml.Fixtures;
@@ -116,7 +117,6 @@ public class CadastroFixture {
 
                 salvarFecharButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent event) {
-                        frame.dispose();
                         StringBuilder fixtureFinal = new StringBuilder();
                         fixtureFinal.append("|scenario|" + nameFixtureTextField.getText() + "|");
                         for (int i = 0; i < tableLabels.getRowCount(); i++) {
@@ -143,6 +143,10 @@ public class CadastroFixture {
                         }
                     }
                 });
+
+
+                tableLabels.addMouseListener(new OptionsTableScenario());
+
 
                 valueSelectorPanel.add(fixturesNamesComboBox);
                 valueSelectorPanel.add(valueSeletorFixtureTextField);

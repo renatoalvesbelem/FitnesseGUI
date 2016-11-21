@@ -27,7 +27,7 @@ public class OptionsTableScenario extends MouseAdapter {
     private void doPop(MouseEvent e) {
         table = ((JTable) e.getSource());
         row = table.rowAtPoint(e.getPoint());
-        PopUpMenu menu = new PopUpMenu(table, row);
+       PopUpMenu menu = new PopUpMenu(table, row);
         menu.show(e.getComponent(), e.getX(), e.getY());
     }
 
