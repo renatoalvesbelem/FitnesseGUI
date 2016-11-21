@@ -1,5 +1,7 @@
 package components.mouse;
 
+import teste.CadastroFixture;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -69,8 +71,15 @@ class ActionListenerTable implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         JMenuItem itemSelected = (JMenuItem) e.getSource();
-        if ((itemSelected.getText().equals("Delete"))) {
+        if (itemSelected.getText().equals("Delete")) {
             deleteRow(new int[]{row});
+        }
+
+        else if (itemSelected.getText().equals("Edit")){
+            new CadastroFixture(table,row,"Edit");
+        }
+        else if (itemSelected.getText().equals("New")){
+            new CadastroFixture(table,row, "New");
         }
     }
 

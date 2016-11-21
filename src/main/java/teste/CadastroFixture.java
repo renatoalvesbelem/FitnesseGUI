@@ -19,8 +19,22 @@ import java.util.List;
 import java.util.Vector;
 
 public class CadastroFixture {
+private JTable tableFixtureSelected;
+    private int row;
+    public CadastroFixture(JTable table, int row, String action) {
+      cadastroFixture();
+        this.tableFixtureSelected = table;
+        this.row = row;
+        if (action.equals("New")){
 
-    public static void main(String[] args) {
+        }
+        else {
+
+        }
+    }
+
+
+    public void cadastroFixture() {
 
         Runnable r = new Runnable() {
             JPanel gui;
@@ -36,16 +50,14 @@ public class CadastroFixture {
                 JButton adicionarFixtureButton = new JButton("+");
                 JButton salvarFecharButton = new JButton("Salvar e Fechar");
                 JTextArea area = new JTextArea();
-
+                salvarFecharButton.setEnabled(false);
                 frame = new JFrame("");
                 frame.setResizable(false);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 gui = new JPanel(new BorderLayout(5, 5));
                 JPanel dataFixturePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
                 JPanel nameFixtureJpanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
                 JPanel valueSelectorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 3));
-
-                gui.setBorder(new TitledBorder(""));
 
                 Fixtures fixtures = new XMLFixtures().getFixtures();
                 nameFixtureTextField.setPreferredSize(new Dimension(300, 25));
@@ -92,6 +104,23 @@ public class CadastroFixture {
                     }
                 });
 
+                KeyAdapter adapter = new KeyAdapter() {
+                    public void keyReleased(java.awt.event.KeyEvent evt)
+                    {
+                        super.keyReleased(evt);
+                        if (nameFixtureTextField.getText().length() > 0 && area.getText().length() > 0)
+                        {
+                            salvarFecharButton.setEnabled(true);
+                        } else
+                        {
+                            salvarFecharButton.setEnabled(false);
+                        }
+                    }
+                };
+
+                nameFixtureTextField.addKeyListener(adapter);
+                area.addKeyListener(adapter);
+
                 salvarFecharButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent event) {
 
@@ -103,12 +132,15 @@ public class CadastroFixture {
                             } else {
                                 fixtureFinal.append(tableLabels.getValueAt(i, 1) + "|" + tableLabels.getValueAt(i, 0) + "|");
                             }
-
                         }
                         fixtureFinal.append("\n");
 
                         fixtureFinal.append(area.getText());
-                        System.out.println(fixtureFinal.toString().replace("null", ""));
+                        String path =tableFixtureSelected.getValueAt(row,1).toString();
+                        String fixture =fixtureFinal.toString().replace("null", "");
+                        String fixtureName = fixture.split("\n")[0].replace("|scenario","");
+                        ((DefaultTableModel) tableFixtureSelected.getModel()).insertRow(row+1, new String []{fixtureName,path,fixture});
+                        frame.dispose();
                     }
                 });
 
@@ -159,7 +191,7 @@ public class CadastroFixture {
                 nomeParametros.addKeyListener(new KeyAdapter() {
                     public void keyTyped(KeyEvent e) {
                         char keyChar = e.getKeyChar();
-                        if (Character.isUpperCase(keyChar)) {
+                       if (Character.isUpperCase(keyChar)) {
                             e.setKeyChar(Character.toLowerCase(keyChar));
                         } else if (!((keyChar < '0') || (keyChar > '9')) || Character.isSpaceChar(keyChar)) {
                             e.consume();
@@ -188,7 +220,7 @@ public class CadastroFixture {
                             for (Object vector : defaultTableModel.getDataVector()) {
                                 tempParametros.add((String) ((Vector) vector).get(0));
                             }
-                            if (!tempParametros.contains(nomeParametros.getText())) {
+                            if (!tempParametros.contains(nomeParametros.getText()) || !nomeParametros.getText().equals("")) {
                                 defaultTableModel.addRow(new String[]{nomeParametros.getText()});
                                 nomeParametros.setText("");
                             }
