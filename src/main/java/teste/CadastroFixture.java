@@ -161,8 +161,8 @@ public class CadastroFixture {
 
                 setPanelParametros();
 
-                area.setLineWrap(true);
-                area.setPreferredSize(new Dimension(500, 500));
+               // area.setLineWrap(true);
+                area.setPreferredSize(new Dimension(500, 700));
                 area.setFont(new Font("Arial", Font.PLAIN, 12));
                 JScrollPane tableScroll = new JScrollPane(area);
                 Dimension tablePreferred = tableScroll.getPreferredSize();
@@ -244,7 +244,7 @@ public class CadastroFixture {
                         for (int i = 3; i < parametrosFixture.length; i++) {
                             String indicadorFitnesse = parametrosFixture[i++];
                             String parametro = parametrosFixture[i];
-                            defaultTableModel.addRow(new String[]{parametro, indicadorFitnesse});
+                            defaultTableModel.addRow(new String[]{parametro.trim(), indicadorFitnesse.trim()});
                         }
                     }
 
