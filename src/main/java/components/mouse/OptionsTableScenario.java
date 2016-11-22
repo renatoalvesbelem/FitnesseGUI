@@ -1,5 +1,7 @@
 package components.mouse;
 
+import labels.cadastrofixture.mouse.ConstantsLabel;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -31,18 +33,18 @@ public class OptionsTableScenario extends MouseAdapter {
         menu.show(e.getComponent(), e.getX(), e.getY());
     }
 
-    class PopUpMenu extends JPopupMenu {
+    class PopUpMenu extends JPopupMenu implements ConstantsLabel {
         JMenuItem anItem;
         JMenuItem espacoBrancoAntes;
         JMenuItem espacoBrancoDepois;
 
         public PopUpMenu(JTable table, int row) {
             if (table.getSelectedRowCount() > 1) {
-                anItem = new JMenuItem("Delete selected lines?");
+                anItem = new JMenuItem(DELETAR_LINHAS_SELECIONADAS);
             } else {
-                anItem = new JMenuItem("Delete");
-                espacoBrancoAntes = new JMenuItem("Linha em Branco Antes");
-                espacoBrancoDepois = new JMenuItem("Linha em Branco Depois");
+                anItem = new JMenuItem(DELETAR);
+                espacoBrancoAntes = new JMenuItem(INSERIR_LINHA_ANTES);
+                espacoBrancoDepois = new JMenuItem(INSERIR_LINHA_DEPOIS);
             }
 
             add(anItem);
@@ -59,16 +61,16 @@ public class OptionsTableScenario extends MouseAdapter {
         }
     }
 
-    class ActionListenerCuston implements ActionListener {
+    class ActionListenerCuston implements ActionListener, ConstantsLabel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem buttonRemove = (JMenuItem) e.getSource();
-            if ((buttonRemove.getText().equals("Delete selected lines?")) || (buttonRemove.getText().equals("Delete") && table.getSelectedRowCount() >= 1)) {
+            if ((buttonRemove.getText().equals(DELETAR_LINHAS_SELECIONADAS)) || (buttonRemove.getText().equals(DELETAR) && table.getSelectedRowCount() >= 1)) {
                 deleteRow(table.getSelectedRows());
-            } else if (buttonRemove.getText().equals("Linha em Branco Antes")) {
+            } else if (buttonRemove.getText().equals(INSERIR_LINHA_ANTES)) {
                 ((DefaultTableModel) table.getModel()).insertRow(table.getSelectedRow(), new String[]{""});
-            } else if (buttonRemove.getText().equals("Linha em Branco Depois")) {
+            } else if (buttonRemove.getText().equals(INSERIR_LINHA_DEPOIS)) {
                 ((DefaultTableModel) table.getModel()).insertRow(table.getSelectedRow() + 1, new String[]{""});
             }
         }

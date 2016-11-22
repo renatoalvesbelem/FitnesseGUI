@@ -3,6 +3,7 @@ package teste;
 import components.cadastrofixture.table.DefaultTableModelParameters;
 import components.mouse.OptionsTableScenario;
 import components.table.TableTranferHandlerParameter;
+import labels.cadastrofixture.mouse.ConstantsLabel;
 import xml.Fixture;
 import xml.Fixtures;
 import xml.XMLFixtures;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class CadastroFixture {
+public class CadastroFixture implements ConstantsLabel {
     private JTable tableFixtureSelected;
     private int row;
 
@@ -132,15 +133,14 @@ public class CadastroFixture {
                         String fixture = fixtureFinal.toString().replace("null", "");
                         String fixtureName = fixture.split("\n")[0].replace("|scenario", "");
 
-                        if (action.equals("Edit")) {
-                            (tableFixtureSelected.getModel()).setValueAt(fixtureName, row,0);
-                            (tableFixtureSelected.getModel()).setValueAt(path, row,1);
-                            (tableFixtureSelected.getModel()).setValueAt(fixture, row,2);
-                            frame.dispose();
+                        if (action.equals(EDITAR)) {
+                            (tableFixtureSelected.getModel()).setValueAt(fixtureName, row, 0);
+                            (tableFixtureSelected.getModel()).setValueAt(path, row, 1);
+                            (tableFixtureSelected.getModel()).setValueAt(fixture, row, 2);
                         } else {
                             ((DefaultTableModel) tableFixtureSelected.getModel()).insertRow(row + 1, new String[]{fixtureName, path, fixture});
-                            frame.dispose();
                         }
+                        frame.dispose();
                     }
                 });
 
@@ -161,7 +161,7 @@ public class CadastroFixture {
 
                 setPanelParametros();
 
-               // area.setLineWrap(true);
+                // area.setLineWrap(true);
                 area.setPreferredSize(new Dimension(500, 700));
                 area.setFont(new Font("Arial", Font.PLAIN, 12));
                 JScrollPane tableScroll = new JScrollPane(area);
@@ -235,7 +235,7 @@ public class CadastroFixture {
                 });
                 dynamicLabels.add(new JScrollPane(tableLabels), BorderLayout.SOUTH);
 
-                if (action.equals("Edit")) {
+                if (action.equals(EDITAR)) {
                     String nomeFixture = tableFixtureSelected.getValueAt(row, 0).toString().split("\\|")[1].trim();
                     nameFixtureTextField.setText(nomeFixture);
                     String[] parametrosFixture = tableFixtureSelected.getValueAt(row, 2).toString().split("\n")[0].replace(nomeFixture, "").replace("|scenario", "").trim().split("\\|");

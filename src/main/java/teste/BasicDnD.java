@@ -29,7 +29,7 @@ public class BasicDnD extends JPanel implements ActionListener {
     private static File fileRoot = new File("C:\\Users\\jose.renato\\Documents\\Projetos\\esaj-test");
     public static int statusTableScript = 0;
     public static String pathArchive;
-    private static HashMap<String, StringBuilder> mapFixture;
+    static HashMap<String, StringBuilder> mapFixture;
 
     private BasicDnD() {
         super(new BorderLayout());

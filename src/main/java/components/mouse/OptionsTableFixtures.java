@@ -1,5 +1,6 @@
 package components.mouse;
 
+import labels.cadastrofixture.mouse.ConstantsLabel;
 import teste.CadastroFixture;
 
 import javax.swing.*;
@@ -33,19 +34,19 @@ public class OptionsTableFixtures extends MouseAdapter {
         menu.show(e.getComponent(), e.getX(), e.getY());
     }
 
-    class PopUpMenu extends JPopupMenu {
+    class PopUpMenu extends JPopupMenu implements ConstantsLabel {
         JMenuItem newItem, deleteItem, editItem;
 
         public PopUpMenu(JTable table, int row) {
 
             if (table.getValueAt(row, 1) == null) {
-                newItem = new JMenuItem("New");
+                newItem = new JMenuItem(NOVO);
                 add(newItem);
                 newItem.addActionListener(new ActionListenerTable(table, row));
             } else {
-                newItem = new JMenuItem("New");
-                deleteItem = new JMenuItem("Delete");
-                editItem = new JMenuItem("Edit");
+                newItem = new JMenuItem(NOVO);
+                deleteItem = new JMenuItem(DELETAR);
+                editItem = new JMenuItem(EDITAR);
 
                 add(newItem);
                 add(deleteItem);
@@ -59,7 +60,7 @@ public class OptionsTableFixtures extends MouseAdapter {
     }
 }
 
-class ActionListenerTable implements ActionListener {
+class ActionListenerTable implements ActionListener, ConstantsLabel {
     JTable table;
     int row;
 
@@ -71,15 +72,12 @@ class ActionListenerTable implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         JMenuItem itemSelected = (JMenuItem) e.getSource();
-        if (itemSelected.getText().equals("Delete")) {
+        if (itemSelected.getText().equals(DELETAR)) {
             deleteRow(new int[]{row});
-        }
-
-        else if (itemSelected.getText().equals("Edit")){
-            new CadastroFixture(table,row,"Edit");
-        }
-        else if (itemSelected.getText().equals("New")){
-            new CadastroFixture(table,row, "New");
+        } else if (itemSelected.getText().equals(EDITAR)) {
+            new CadastroFixture(table, row, EDITAR);
+        } else if (itemSelected.getText().equals(NOVO)) {
+            new CadastroFixture(table, row, NOVO);
         }
     }
 
