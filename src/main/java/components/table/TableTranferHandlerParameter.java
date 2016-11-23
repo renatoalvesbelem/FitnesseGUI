@@ -47,11 +47,7 @@ public class TableTranferHandlerParameter extends TransferHandler {
         if (dl.isInsertRow()) {
             int rowDropped = dl.getRow();
 
-            try {
-                removeRowWhenMove(table);
-            } catch (Exception e) {
-                System.out.println("Tentou excluir da tabela");
-            }
+
 
             if (dropValue.contains("\n") || dropValue.contains("BLANK")) {
                 String[] rows = dropValue.split("\n");
@@ -67,6 +63,11 @@ public class TableTranferHandlerParameter extends TransferHandler {
 
             } else {
                 listModel.insertRow(rowDropped, new String[]{dropValue});
+            }
+            try {
+                removeRowWhenMove(table);
+            } catch (Exception e) {
+                System.out.println("Tentou excluir da tabela");
             }
         }
         return false;
@@ -84,19 +85,23 @@ public class TableTranferHandlerParameter extends TransferHandler {
             if (table.getValueAt(row, 0).equals("")) {
                 stringBuilder.append("BLANK" + "\n");
             } else {
-                stringBuilder.append("@"+table.getValueAt(row, 0).toString() + "\n");
+                stringBuilder.append("@" + table.getValueAt(row, 0).toString() + "\n");
             }
         }
         return new StringSelection(stringBuilder.toString().substring(0, stringBuilder.length() - 1));
     }
 
     private void removeRowWhenMove(JTable table) {
-        int rows[] = table.getSelectedRows();
-        rows[0] = rows[0] + 1;
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-        for (int row : rows) {
-            tableModel.removeRow(table.convertRowIndexToModel(row - 1));
-        }
+        int rows[] = table.getSelectedRows();
+        int del = 1;
+        for (int j = 0; j < rows.length; j++) {
+            tableModel.removeRow(rows[j]);
+            if (j < rows.length - 1) {
+                rows[j + 1] = rows[j + 1] - del;
+                del++;
+            }
 
+        }
     }
 }
